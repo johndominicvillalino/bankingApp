@@ -1,0 +1,34 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    
+    height: 100vh;
+    width: 100%;
+    background-color: #016FB9;
+ 
+}
+
+input {
+    padding: 15px 5px;
+    text-align: center;
+    font-size:  15px;
+    border:1px solid rgb(153, 151, 151)
+}
+
+button {
+    padding: 15px 5px;
+    border:0;
+    font-size: 15px;
+    background-color: #0462a0;
+    color: #fff;
+    cursor: pointer;
+}
+
+input:focus {
+
+    outline: none;
+}

@@ -3,7 +3,9 @@ const router = express.Router();
 const fs = require("fs");
 const User = require("../../dbSchema/Users.js");
 const { dirname, resolve } = require("path");
+const {Users} = require('../../Constants/Constants.js')
 const { check, validationResult } = require("express-validator");
+const {getData,updateData} = require('../../functions/helper.js')
 
 //@@ public
 //@@ api/account/create
@@ -13,41 +15,38 @@ router.post(
     check("lName", "Last Name Required").not().isEmpty(),
     check("fName", "First Name Required").not().isEmpty(),
     check("age", "Error vote ID").isNumeric().not().isEmpty(),
+    check("password", "Password Required").not().isEmpty(),
     check("email", "Error in Email").isEmail(),
   ],
   (req, res) => {
+
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    console.log(req.body);
+    const {lName,fName,age,email,password} = req.body
 
     const obj = {
-      lName: "Villalino",
-      fName: "John",
-      age: 18,
-      email: "john@email.com",
+        lName,fName,age,email,password
     };
 
     let user = new User(obj);
-    const Users = resolve(dirname(require.main.filename) + "/db/Users.json");
 
-    fs.readFile(Users, "utf8", function (err, data) {
-      if (err) {
-        throw err;
-      } else {
-        let parsed = JSON.parse(data);
-        parsed.push(user);
-        parsed = JSON.stringify(parsed);
+    let users = getData(Users)
 
-        fs.writeFile(Users, parsed, (err) => {
-          if (err) throw err;
-          console.log("save");
-        });
-      }
-    });
+    // check if user exist
+    const check = users.find(e => e.email === email)
+    if(check) {
+        return res.status(400).json(`Invalid! ${email} account exist`)
+    }
+
+    let updateNow = updateData(Users,user)
+
+    if(updateNow) {
+        res.json({id: user.id})
+    }
   }
 );
 

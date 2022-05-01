@@ -2,32 +2,41 @@ const express = require("express");
 const router = express.Router();
 const User = require("../../db/Users.json");
 const fs = require("fs");
-const { dirname, resolve, parse } = require("path");
+const {Users} = require('../../Constants/Constants.js')
+const {check,validationResult} = require('express-validator')
+const {getData,updateData} = require('../../functions/helper.js')
 
-router.get("/", (req, res) => {
-   const Users = resolve(dirname(require.main.filename) + "/db/Users.json");
-  fs.readFile(Users, "utf8", function (err, data) {
-    if (err) throw err;
-    let returnData = JSON.parse(data)
-    res.json(returnData)
-  });
-});
 
-router.post("/", (req, res) => {
-  const Users = resolve(dirname(require.main.filename) + "/db/Users.json");
-  fs.readFile(Users, "utf8", function (err, data) {
-    if (err) {
-      throw err;
-    } else {
-      let parsed = JSON.parse(data);
-      parsed.push({ userName: "anotherTest", password: "passwordtwo" });
-      parsed = JSON.stringify(parsed);
-      fs.writeFile(Users, parsed, (err) => {
-        if (err) throw err;
-        console.log("save");
-      });
-    }
-  });
-});
+//@@ login 
+//@@ public 
+router.post('/',[
+   check('email',"Email is Invalid").isEmail(),
+   check('password',"Password is Required").not().isEmpty(),
+],(req,res) => {
+
+   const errors = validationResult(req);
+
+   if (!errors.isEmpty()) {
+     return res.status(400).json({ errors: errors.array() });
+   }
+
+   const {email, password} = req.body
+
+         let data = getData(Users)
+   
+         data = data.find(e => e.email === email)
+
+         if(!data) {
+            return res.json('Email not found')
+         }
+
+         if(data.password !== password) {
+            return res.json('password incorrect')
+         } else {
+            return res.json(data)
+         }
+        
+       
+})
 
 module.exports = router;

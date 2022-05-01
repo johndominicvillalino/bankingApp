@@ -15,14 +15,14 @@ body {
 input {
     padding: 15px 5px;
     text-align: center;
-    font-size:  15px;
+    font-size:  25px;
     border:1px solid rgb(153, 151, 151)
 }
 
 button {
     padding: 15px 5px;
     border:0;
-    font-size: 15px;
+    font-size: 25px;
     background-color: #0462a0;
     color: #fff;
     cursor: pointer;
@@ -31,4 +31,16 @@ button {
 input:focus {
 
     outline: none;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+.text-align-left {
+    text-align: left;
+}
+
+.mt-10 {
+    margin-top:  10px;
 }

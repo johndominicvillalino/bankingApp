@@ -30,6 +30,11 @@ app.use('/api/account/create', require('./routes/api/create'));
 app.use('/api/bank', require('./routes/api/Bank'));
 
 
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname + '/client/home.html'))
+  });
+
+
 app.listen(port, () => {
     console.log(`Running on port ${port}`)
 })

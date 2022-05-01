@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const fs = require("fs");
 const User = require("../../dbSchema/Users.js");
-const { dirname, resolve } = require("path");
 const {Users} = require('../../Constants/Constants.js')
 const { check, validationResult } = require("express-validator");
 const {getData,updateData} = require('../../functions/helper.js')
@@ -45,7 +44,7 @@ router.post(
     let updateNow = updateData(Users,user)
 
     if(updateNow) {
-        res.json({id: user.id})
+        return res.json({id: user.id})
     }
   }
 );

@@ -4,7 +4,20 @@ const User = require("../../db/Users.json");
 const fs = require("fs");
 const {Users} = require('../../Constants/Constants.js')
 const {check,validationResult} = require('express-validator')
-const {getData,updateData} = require('../../functions/helper.js')
+const {getData} = require('../../functions/helper.js')
+
+
+
+//@@ login 
+//@@ private 
+router.get('/',[
+   check('id','Error no Id')
+], (req,res) => {
+   const {id} = req.query
+   let allUsers = getData(Users)
+   const checkId = allUsers.find(e => e.id === id)
+   return checkId
+})
 
 
 //@@ login 
@@ -33,9 +46,10 @@ router.post('/',[
          if(data.password !== password) {
             return res.json('password incorrect')
          } else {
+            //dont return password
+            delete data.password
             return res.json(data)
          }
-        
        
 })
 

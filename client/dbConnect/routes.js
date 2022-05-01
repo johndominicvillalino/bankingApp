@@ -1,24 +1,11 @@
+import {config} from './types.js'
 
-
-
-window.addEventListener('load', e => {
-   const sampleGet = async () => {
-      const getThis = await axios.get('/api/login')
-      console.log(getThis.data)
+export const login = async (email,password) => {
+   let body = {
+      email,
+      password
    }
-   sampleGet()
-})
-   // const samplePost = async () => {
-   //    const getThis = await axios.post('/api/login')
-   //    console.log(getThis.data)
-   // }
-
-document.getElementById('test').addEventListener('click',e => {
-   const samplePost = async () => {
-      const getThis =  await axios.post('/api/login')
-      console.log(getThis.data)
-   }
-    samplePost()
-
-})
-
+   body = JSON.stringify(body)
+   const res = await axios.post('api/login',body,config)
+   return res.data;
+}

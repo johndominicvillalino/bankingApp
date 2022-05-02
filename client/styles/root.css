@@ -28,6 +28,10 @@ button {
     cursor: pointer;
 }
 
+button:hover {
+    background-color: #407ba3;
+}
+
 input:focus {
 
     outline: none;

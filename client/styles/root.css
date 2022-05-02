@@ -48,3 +48,12 @@ h1 {
 .mt-10 {
     margin-top:  10px;
 }
+
+a {
+    cursor: pointer;
+    color: #016FB9
+}
+
+a:hover {
+    color: #6492b1
+}

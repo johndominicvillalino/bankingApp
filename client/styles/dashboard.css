@@ -1,0 +1,45 @@
+.container-grid {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: 20% 80%;
+
+}
+
+
+
+.flex-container {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding: 50px 20px;
+    background-color: #fff;
+    justify-content: space-evenly;
+    
+}
+
+
+.flex-container li {
+    list-style: none;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    border: 1px rgb(124, 123, 122) solid;
+    cursor: pointer;
+   
+}
+
+#fNameDashboard,#logout {
+
+border: 0;
+
+}
+
+
+.inner-container {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

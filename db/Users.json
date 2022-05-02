@@ -1,1 +1,1 @@
-[{"fName":"fName","lName":"lName","age":"18","password":"123","id":"a6844539-5324-4251-a7b8-a49ebca40b24","email":"email@email.com","isAdmin":false,"fullName":"fName lName"}]
+[{"fName":"fName","lName":"lName","age":"18","password":"123","id":"a6844539-5324-4251-a7b8-a49ebca40b24","email":"email@email.com","isAdmin":true,"fullName":"fName lName"}]

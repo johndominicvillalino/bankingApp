@@ -15,18 +15,62 @@
 <body id="body">
 
 
-   <div class="login-container">
-        <form class='form' id="loginForm">
+   <div class="container">
+        <form class='form' id="loginForm" style='display:none' >
+            <div id="error"></div>
             <h1>Secret Bank of Asia</h1>
-            <input class='loginform' id='loginEmail'type="email" name="email">
-            <input class='loginform'  id='loginPassword' type="password" name="password">
+            <input placeholder='email' class='loginform' id='loginEmail'type="email" name="email">
+            <input placeholder='password' class='loginform'  id='loginPassword' type="password" name="password">
             <button type="submit" id="loginSubmit">Login</button>
             <div class="text-align-left">
                 <a id="register">Register an Accout?</a><br><br>
                 <a id="forgotPassword">Forgot your password?</a>
             </div>
         </form>
+        <form class='form' style='display:none' id="RegisterForm">
+            <h1>Register An Account</h1>
+            <input placeholder='First Name' class='loginform' id='registerFname'type="text" name="fName">
+            <input  placeholder='Last Name' class='loginform' id='registerLname'type="text" name="lName">
+            <input  placeholder='Age' class='loginform' id='age'type="number" name="age">
+            <input placeholder='email' class='loginform' id='registerEmail'type="email" name="email">
+            <input class='loginform' placeholder="password"  id='registerPassword' type="password" name="password">
+            <input placeholder="retype password" class='loginform'  id='registerPasswordTwo' type="password" name="passwordTwo">
+            <button type="submit" id="registerSubmit">Submit</button>
+            <div class="text-align-left">
+                <a>&#10096;&#10096; Back</a><br><br>
+            </div>
+        </form>
+
+        <form class='form' style='display:none' id="resetPassword">
+
+            <h1>Reset Password</h1>
+            <input placeholder='email' class='loginform' id='resetEmail'type="email" name="email">
+            <button type="submit" id="resetSubmit">Submit</button>
+            <div class="text-align-left">
+                <a>&#10096;&#10096; Back</a><br><br>
+            </div>
+        </form>
+
+
+        <div style='display: none' class="container-grid" id="dashboard">
+            <div class="sidebar-menu">
+                <ul class="flex-container">
+                    <li class='dashboardMenu' id="fNameDashboard">Hi Admin</li>
+                    <li class='dashboardMenu'>Accounts</li>
+                    <li class='dashboardMenu'>Witdraw</li>
+                    <li class='dashboardMenu'>Deposit</li>
+                    <li class='dashboardMenu' id="logout">Logout</li>
+                </ul>
+            </div>
+            <div id='inner' class="inner-container">
+                Inner
+            </div>
+        </div>
     </div>
+
+
+    
+
 
 
 </body>

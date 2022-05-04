@@ -14,12 +14,26 @@ router.get("/", [
     check("id", "No Id found").not().isEmpty()
 ], async(req, res) => {
 
+    const {accountNum} = req.query
+    
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       return res.json({ errors: errors.array() });
     }
+
+    
+
     const test = await getData(Banks)
+
+
+    if(accountNum) {
+        
+       const found = test.find(e => e.accountNum === accountNum)
+       console.log(found)
+        return res.json(found)
+    }
+
     return res.json(test)
 
 });
@@ -57,8 +71,6 @@ router.post("/", [
     let updateBankData = updateData(Banks,newBank)
 
     return res.json(updateBankData)
-
-
 
 });
 

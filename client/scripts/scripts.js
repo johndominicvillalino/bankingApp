@@ -15,8 +15,6 @@ dom.querySelectorAll("a").forEach((el) => {
 //state update
 window.onpopstate = function (event) {
 
-
-
   let { state } = event;
   storeData("currentState", state);
   processStateRoute();
@@ -40,7 +38,11 @@ window.addEventListener("load", (e) => {
   }
 
 
+
 });
+
+
+
 
 function processStateRoute() {
 
@@ -90,25 +92,43 @@ function processStateRoute() {
         try {
           let res = await getAllBanks('a6844539-5324-4251-a7b8-a49ebca40b24')
           res = res.data
-          storeObjData('banks',res)
+          storeObjData('banks', res)
 
           const storedBanks = getStoredObjData('banks')
 
-          const checkBankEl = dom.querySelectorAll('.banks')
-          if(checkBankEl) {
+          const checkBankEl = dom.querySelectorAll('.banksContainer')
+          if (checkBankEl) {
             checkBankEl.forEach(e => {
               e.remove()
             })
           }
 
-          storedBanks.forEach(el => {
+          const personalBank = dom.querySelectorAll('.personalBankContainer')
+
+          if(personalBank) {
+            personalBank.forEach(e => {
+              e.remove()
+            })
+          }
+
+
+          storedBanks.forEach((el,i) => {
             const div = dom.createElement('div')
-            div.setAttribute('class','banks')
-            div.textContent = el.accountNum
+            div.setAttribute('class', 'banksContainer')
+            div.setAttribute('onclick', `bankInfo(this)`)
+            div.setAttribute('id', `bank${i}`)
+            const banks = dom.createElement('div')
+            banks.setAttribute('class', 'banks')
+            const p = dom.createElement('p')
+            const pTwo = dom.createElement('p')
+            p.textContent = el.accountName
+            pTwo.textContent = el.accountNum
+            banks.appendChild(p)
+            banks.appendChild(pTwo)
+            div.appendChild(banks)
+           
             dom.getElementById('inner').appendChild(div)
           })
-
-
         } catch (error) {
         }
       }
@@ -181,9 +201,10 @@ dom.querySelectorAll('.loginform').forEach(e => {
 
 dom.querySelectorAll('.dashboardMenu').forEach(e => {
   e.addEventListener('click', el => {
-
     const subRoute = el.target.innerText;
     stateUpdate(`${origin}/dashboard/${subRoute.toLowerCase()}`)
-
   })
 })
+
+
+

@@ -13,7 +13,7 @@ export const login = async ({email,password}) => {
 
 export const getAllBanks = async (id) => {
 
-   //a6844539-5324-4251-a7b8-a49ebca40b24
+ 
   const res = await axios.get(`${origin}/api/bank?id=${id}`)
   return res
 }

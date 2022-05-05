@@ -17,8 +17,31 @@ const updateData = (filePath,newData) => {
     
   };
 
+
+  
+const updateSingleData = (filePath,newData) => {
+
+  let currentData = getData(filePath)
+  const newDataAccount = newData.accountNum
+  
+  const found = currentData.find(e => e.accountNum === newDataAccount)
+  
+  if(found) {
+    found.balance = newData.balance
+  }
+
+  currentData = JSON.stringify(currentData)
+  fs.writeFileSync(filePath,currentData, "utf-8");
+
+  return 'done'
+  
+};
+
+
+
   
 module.exports = {
+  updateSingleData,
   getData,
   updateData
 };

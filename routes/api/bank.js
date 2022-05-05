@@ -52,12 +52,9 @@ router.post("/", [
     }
 
     const { id, fName, lName, age, initialDeposit, ownerId } = req.body
-
     let users = getData(Users)
 
-
     users = users.find(e => e.id === id)
-
 
     if (users.isAdmin === false) {
         return res.json('Error Unauthorized!')
@@ -73,8 +70,6 @@ router.post("/", [
     return res.json(updateBankData)
 
 });
-
-
 
 router.put('/', [
     check("account", "Account not found").not().isEmpty(),
@@ -92,6 +87,8 @@ router.put('/', [
 
     const { account, action, amount } = req.body
 
+    // console.log(account,action,amount)
+
     let banks = await getData(Banks)
     let getBank = banks.find(e => e.accountNum === account)
     if (account) {
@@ -100,7 +97,6 @@ router.put('/', [
             case 'withdraw':
 
                 getBank.balance -= amount
-
                 updateSingleData(Banks, getBank)
                 return res.json('done')
                 break;
@@ -119,7 +115,6 @@ router.put('/', [
     }
 
 
-    // const {account,action,amount} = req.body
 
 })
 

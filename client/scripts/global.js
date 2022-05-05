@@ -16,8 +16,9 @@ async function bankInfo({ id }) {
     const div = createDiv('personalBankContainer')
     const divTwo = createDiv('personalName')
     const divThree = createDiv('personalBalance')
+    divThree.setAttribute('id', 'balance')
     const divFour = createDiv('personalBalance')
-    divFour.setAttribute('id','accountNumber')
+    divFour.setAttribute('id', 'accountNumber')
     const widthdrawBtn = createButton('widthraw')
     widthdrawBtn.setAttribute('onclick', `widthdraw(this)`)
     widthdrawBtn.textContent = 'Withdraw'
@@ -26,12 +27,12 @@ async function bankInfo({ id }) {
 
     DepositBtn.textContent = 'Deposit'
     DepositBtn.setAttribute('onclick', `deposit(this)`)
-    let appendAll = [divTwo ,divFour,divThree, widthdrawBtn, DepositBtn]
+    let appendAll = [divTwo, divFour, divThree, widthdrawBtn, DepositBtn]
 
     divTwo.textContent = found.accountName
     divFour.textContent = found.accountNum
     divThree.textContent = found.balance
-  
+
 
     appendAll.forEach(e => {
         div.append(e)
@@ -78,12 +79,9 @@ function widthdraw(e) {
     button.setAttribute('id', 'submitTrans')
     button.setAttribute('onclick', `submitTrans('withdraw')`)
     button.textContent = 'Complete'
-        input.setAttribute('type', 'number')
+    input.setAttribute('type', 'number')
     input.setAttribute('id', 'withdrawId')
     const personal = dom.querySelector('.personalBankContainer')
-
-
-
 
     hideThis.forEach(e => {
         e.remove()
@@ -96,18 +94,92 @@ function widthdraw(e) {
 
 function deposit(e) {
 
+    const widthdrawBtn = dom.querySelector('.widthraw')
+    const depositBtn = dom.querySelector('.deposit')
+
+    const hideThis = [widthdrawBtn, depositBtn]
+    const input = dom.createElement('input')
+    const button = dom.createElement('button')
+    button.setAttribute('id', 'submitTrans')
+    button.setAttribute('onclick', `submitTrans('deposit')`)
+    button.textContent = 'Complete'
+    input.setAttribute('type', 'number')
+    input.setAttribute('id', 'depositId')
+    const personal = dom.querySelector('.personalBankContainer')
+
+    hideThis.forEach(e => {
+        e.remove()
+    })
+
+    personal.appendChild(input)
+    personal.appendChild(button)
+
 }
 
-function submitTrans(action) {
+async function submitTrans(action) {
 
-        switch (action) {
-            case 'withdraw':
-                
-                
-                break;
-        
-            default:
-                break;
+    let config = {
+        headers: {
+            'Content-Type': 'Application/json'
         }
+    }
 
+    let val = dom.getElementById('withdrawId')
+    let valDeposit = dom.getElementById('depositId')
+    const balance = dom.getElementById('balance')
+    const accNumber = dom.getElementById('accountNumber').textContent
+
+    
+    const url = '/api/bank'
+
+    let body = {}
+
+    switch (action) {
+
+
+        case 'withdraw':
+
+            if(val.value > balance.textContent ){
+                window.alert('Insuffecient funds')
+                return 
+            }
+            body = {
+                account: accNumber,
+                action,
+                amount: val.value
+            }
+
+            await axios.put(url, body, config)
+
+            balance.textContent -= val.value;
+            val.value = ''
+            window.alert('transaction completed!')
+            break;
+
+        case 'deposit':
+
+            let depoVal = parseInt(valDeposit.value)
+            body = {
+                account: accNumber,
+                action,
+                amount: depoVal
+            }
+
+            await axios.put(url, body, config)
+            let balInt = parseInt(balance.textContent)
+            balance.textContent = balInt + depoVal 
+            valDeposit.value = ''
+            window.alert('transaction completed!')
+            break;
+
+        default:
+            break;
+    }
+
+}
+
+
+function logout() {
+    window.localStorage.clear()
+    window.location.href = '/'
 }

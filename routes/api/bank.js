@@ -119,6 +119,42 @@ router.put('/', [
 })
 
 
+//@@ /bank/transfer
+
+router.put('/transfer',[
+    check('from','no From Id'),
+    check('to','no to Id'),
+    check('transVal','no transfer value ')
+],async (req,res) => {
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.json({ errors: errors.array() });
+    }
+
+    const { from, to, transValue } = req.body
+
+    let banks = await getData(Banks)
+
+    const fromBnk = banks.find(e => e.accountNum === from)
+    
+    fromBnk.balance =  fromBnk.balance - transValue;
+
+    updateSingleData(Banks, fromBnk)
+
+    const toBnk = banks.find(e => e.accountNum === to)
+    
+    toBnk.balance = toBnk.balance + transValue;
+
+    updateSingleData(Banks, toBnk)
+      
+    return res.json('test')
+
+
+
+})
+
 
 
 module.exports = router;

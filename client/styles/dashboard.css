@@ -30,6 +30,11 @@
    
 }
 
+
+#fNameDashboard {
+    cursor: context-menu;
+}
+
 #fNameDashboard,#logout {
 
 border: 0;

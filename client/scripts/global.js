@@ -130,6 +130,9 @@ function widthdraw(e) {
   const widthdrawBtn = dom.querySelector(".widthraw");
   const depositBtn = dom.querySelector(".deposit");
 
+
+
+
   const hideThis = [widthdrawBtn, depositBtn,transferBtn];
   const input = dom.createElement("input");
   const button = dom.createElement("button");
@@ -183,6 +186,9 @@ async function submitTrans(action) {
   const balance = dom.getElementById("balance");
   const accNumber = dom.getElementById("accountNumber").textContent;
 
+
+  
+
   const url = "/api/bank";
   const transferUrl = "/api/bank/transfer";
 
@@ -190,6 +196,14 @@ async function submitTrans(action) {
 
   switch (action) {
     case "withdraw":
+
+
+      if(val.value < 1 || val.value.length < 1) {
+        window.alert('missing input value')
+        return 
+      }
+
+
       if (val.value > parseInt(balance.textContent)) {
         window.alert("Insuffecient funds");
         return;
@@ -208,6 +222,14 @@ async function submitTrans(action) {
       break;
 
     case "deposit":
+
+
+      if(valDeposit.value < 1 || vavalDepositl.value.length < 1) {
+        window.alert('missing input value')
+        return 
+      }
+
+      
       let depoVal = parseInt(valDeposit.value);
       body = {
         account: accNumber,
@@ -220,14 +242,22 @@ async function submitTrans(action) {
       balance.textContent = balInt + depoVal;
       valDeposit.value = "";
       window.alert("transaction completed!");
+
       break;
 
       case 'transfer': 
      const transValue = dom.getElementById('transferVal') 
+      if(transValue.value < 1 || transValue.value.length < 1) {
+        window.alert('missing input value')
+        return 
+      }
      const currentBal = dom.getElementById('balance') 
    
-     let val = transValue.value
-     val = parseInt(val)
+     let transValInput = transValue.value
+     
+     transValInput = parseInt(transValInput)
+
+
 
      const fromId = dom.getElementById('accountNumber').textContent
      const toId = dom.getElementById('bankSelect').value
@@ -236,7 +266,7 @@ async function submitTrans(action) {
      let data = {
         from:fromId,
         to:toId,
-        transValue:val
+        transValue:transValInput
      }
 
              
@@ -245,8 +275,10 @@ async function submitTrans(action) {
     let currVal = currentBal.textContent
     currVal = parseInt(currVal)
 
-    currVal = currVal - val
+    currVal = currVal - transValInput
+
     currentBal.textContent = currVal
+
     transValue.value = ''
 
     window.alert('transaction complete')

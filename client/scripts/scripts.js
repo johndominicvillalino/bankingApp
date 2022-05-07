@@ -201,6 +201,7 @@ dom.querySelectorAll('.loginform').forEach(e => {
 
 dom.querySelectorAll('.dashboardMenu').forEach(e => {
   e.addEventListener('click', el => {
+   
     const subRoute = el.target.innerText;
     stateUpdate(`${origin}/dashboard/${subRoute.toLowerCase()}`)
   })

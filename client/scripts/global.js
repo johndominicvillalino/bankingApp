@@ -55,6 +55,11 @@ function hideBankInfo() {
   dom.querySelectorAll(".banksContainer").forEach((e) => {
     e.style.display = "none";
   });
+
+  dom.querySelectorAll('.add-account-button').forEach(e => {
+    e.remove()
+  })
+  
 }
 
 function getStoredObjData(holder) {

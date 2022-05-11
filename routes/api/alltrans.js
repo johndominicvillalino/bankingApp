@@ -10,17 +10,36 @@ const { getData } = require('../../functions/helper.js')
 //@@ /api/transactions
 
 router.get('/',async(req,res) => {
+    
 
-
+    let returnThis = []
     let banks = await getData(Banks)
+
+   
     banks = banks.map(e => {
         return {
-            fName: e.fName,
-            lName: e.lName,
-            widthdrawals : e.widthdrawals,
+            name: e.fName + " " + e.lName,
+            widthdrawals : e.withdrawals,
             deposits : e.deposits,
         }
     })
+
+    banks.forEach(e => {
+        e.widthdrawals.forEach(el => {
+            el.name = e.name
+            returnThis.push(el)
+        })
+        e.deposits.forEach(ele => {
+            ele.name = e.name
+            returnThis.push(ele)
+        })
+    })
+
+    returnThis = returnThis.sort((a,b) => b.time.localeCompare(a.time))
+
+    console.log(returnThis)
+
+    return res.json(returnThis)
 
 
 })

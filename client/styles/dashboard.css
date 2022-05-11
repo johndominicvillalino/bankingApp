@@ -46,8 +46,8 @@ border: 0;
     display:flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     flex-wrap: wrap;
+    gap: 20px;
 }
 
 .banks {
@@ -100,3 +100,19 @@ border: 0;
     cursor: pointer;
 
 }
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }

@@ -89,6 +89,8 @@ function processStateRoute() {
       break
     case origin + '/dashboard' + '/accounts':
 
+      removeTransTable()
+
       const getData = async () => {
         try {
           let res = await getAllBanks('a6844539-5324-4251-a7b8-a49ebca40b24')

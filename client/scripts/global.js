@@ -180,6 +180,9 @@ function deposit(e) {
 }
 
 async function submitTrans(action) {
+
+
+
   let config = {
     headers: {
       "Content-Type": "Application/json",
@@ -189,10 +192,10 @@ async function submitTrans(action) {
   let val = dom.getElementById("withdrawId");
   let valDeposit = dom.getElementById("depositId");
   const balance = dom.getElementById("balance");
+ 
+
   const accNumber = dom.getElementById("accountNumber").textContent;
 
-
-  
 
   const url = "/api/bank";
   const transferUrl = "/api/bank/transfer";
@@ -251,7 +254,15 @@ async function submitTrans(action) {
       break;
 
       case 'transfer': 
-     const transValue = dom.getElementById('transferVal') 
+
+      const transValue = dom.getElementById('transferVal') 
+
+  
+      if(parseInt(balance.textContent) < parseInt(transValue.value)) {
+        window.alert('insufficient funds')
+        return 
+      }
+    
       if(transValue.value < 1 || transValue.value.length < 1) {
         window.alert('missing input value')
         return 
@@ -307,7 +318,7 @@ function addAccountFunc () {
   //a6844539-5324-4251-a7b8-a49ebca40b24
   const body = dom.getElementById('body')
   body.style.opacity = .20
-  body.style.zIndex = 0
+  body.style.pointerEvents ='none'
 
   const div = dom.createElement('div')
   div.setAttribute('class','addFormContainer')
@@ -354,14 +365,14 @@ function addAccountFunc () {
 function removeAddForm () {
   const body = dom.getElementById('body')
   body.style.opacity = 1
-  body.style.zIndex = 1
+
+  body.style.pointerEvents = 'auto'
   dom.querySelector('.addFormContainer').remove()
 }
 
 async function createAccountSubmit (e) {
 
-
-  
+ 
   const id = 'a6844539-5324-4251-a7b8-a49ebca40b24'
 
   const fName = dom.getElementById('createFname')
@@ -369,14 +380,26 @@ async function createAccountSubmit (e) {
   const initialD = dom.getElementById('initialDeposit')
 
 
-  const checkVal = [fName,lName,initialD]
 
-  checkVal.forEach(e => {
-    if(e.value.length < 1) {
-      window.alert(`no value of ${e.placeholder}`)
-      return
-    }
-  })
+  const fNameLen = fName.value.length
+  const lNameLen = lName.value.length
+  const initialDLen = initialD.value.length
+ 
+  if(fNameLen < 1 || !fNameLen) {
+    window.alert('missing information')
+    removeAddForm()
+    return
+  }
+  if(lNameLen < 1 || !lNameLen) {
+    window.alert('missing information')
+    removeAddForm()
+    return
+  }
+  if(initialDLen < 1 || !initialDLen) {
+    window.alert('missing information')
+    removeAddForm()
+    return
+  }
 
   const url = '/api/bank'
 
@@ -404,15 +427,104 @@ let config = {
 
 }
 
-function analysis () {
+function removeTransTable () {
+  const tableExist = dom.querySelector('table')
+  if(tableExist) {
+    tableExist.remove()
+  }
+}
+
+async function analysis () {
 
   dom.querySelectorAll('.banksContainer').forEach(e => {
     e.remove()
   })
+
   const personal = dom.querySelector('.personalBankContainer');
   if(personal) {
     personal.remove()
   }
+
+
+  removeTransTable()
+
+  const spanExist = dom.getElementById('addAccount')
+  
+  if(spanExist){
+    spanExist.remove()
+  }
+
+  let transactions = await axios.get('/api/transactions')
+  transactions = transactions.data
+
+
+  
+  const table = dom.createElement('table')
+
+  const tr = dom.createElement('tr')
+
+  const transType = dom.createElement('th')
+  transType.textContent = 'Transaction Type'
+
+  const name = dom.createElement('th')
+  name.textContent = 'Name'
+
+  const amount = dom.createElement('th')
+  amount.textContent = 'Amount'
+
+  const running = dom.createElement('th')
+  running.textContent = 'Running Balance'
+
+  const date = dom.createElement('th')
+  date.textContent = 'Date'
+
+  const appendThis = [tr,transType,amount,running,date]
+
+    table.appendChild(tr)
+    table.appendChild(name)
+    table.appendChild(transType)
+
+    table.appendChild(running)
+    table.appendChild(amount)
+    table.appendChild(date)
+ 
+
+  transactions.forEach(e => {
+
+    const trIn = dom.createElement('tr')
+
+
+    const td0 = dom.createElement('td')
+    td0.textContent = e.name
+
+    const td1 = dom.createElement('td')
+    td1.textContent = e.type
+
+    const td2 = dom.createElement('td')
+    td2.textContent = e.running
+    const td3 = dom.createElement('td')
+    td3.textContent = e.amount
+
+    const td4 = dom.createElement('td')
+    const month = new Date(e.time).getMonth() + 1 
+    td4.textContent = new Date(e.time).getDate() + '/' + month  + '/' + new Date(e.time).getFullYear() 
+
+    const appendAll = [td0,td1,td2,td3,td4]
+
+    appendAll.forEach(el => {
+
+      trIn.appendChild(el)
+
+    }) 
+
+    table.appendChild(trIn)
+
+  })
+
+
+
+  dom.getElementById('inner').appendChild(table)
+
 
    
 }

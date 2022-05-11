@@ -151,7 +151,7 @@ router.put('/transfer', [
 
     const fromBnk = banks.find(e => e.accountNum === from)
 
-    const deduction = fromBnk.balance - transValue;
+    const deduction = parseInt(fromBnk.balance) - parseInt(transValue);
 
     const widthdrawInfo = {
         type: 'transfer',
@@ -167,7 +167,7 @@ router.put('/transfer', [
 
     const toBnk = banks.find(e => e.accountNum === to)
 
-    const addition =  toBnk.balance + transValue;
+    const addition =  parseInt(toBnk.balance) + parseInt(transValue);
     const depositInfo = {
         type: 'transfer',
         running: addition,

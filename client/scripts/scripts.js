@@ -1,5 +1,6 @@
 import { login, stateUpdate, getAllBanks } from "../dbConnect/routes.js";
 import { storeData, storeObjData, getStringData, getStoredObjData } from "../dbConnect/storage.js";
+import { config } from '../dbConnect/types.js'
 const reloadState = window.location.href;
 const origin = window.location.origin;
 const dom = document;
@@ -71,7 +72,7 @@ function processStateRoute() {
 
   switch (getStringData("currentState")) {
 
-       case origin + '/':
+    case origin + '/':
       hideOthers('loginForm')
       break;
     case origin + '/register':
@@ -108,14 +109,14 @@ function processStateRoute() {
 
           const personalBank = dom.querySelectorAll('.personalBankContainer')
 
-          if(personalBank) {
+          if (personalBank) {
             personalBank.forEach(e => {
               e.remove()
             })
           }
 
 
-          storedBanks.forEach((el,i) => {
+          storedBanks.forEach((el, i) => {
             const div = dom.createElement('div')
             div.setAttribute('class', 'banksContainer')
             div.setAttribute('onclick', `bankInfo(this)`)
@@ -129,7 +130,7 @@ function processStateRoute() {
             banks.appendChild(p)
             banks.appendChild(pTwo)
             div.appendChild(banks)
-           
+
             dom.getElementById('inner').appendChild(div)
           })
         } catch (error) {
@@ -143,9 +144,9 @@ function processStateRoute() {
       getData()
 
       const span = dom.createElement('span')
-      span.setAttribute('id','addAccount')
-      span.setAttribute('class','add-account-button')
-      span.setAttribute('onclick',`addAccountFunc()`)
+      span.setAttribute('id', 'addAccount')
+      span.setAttribute('class', 'add-account-button')
+      span.setAttribute('onclick', `addAccountFunc()`)
       span.textContent = '+'
       dom.getElementById('inner').appendChild(span)
 
@@ -185,12 +186,19 @@ dom.getElementById('loginSubmit').addEventListener('click', async e => {
     }
     const res = await login(data)
 
-    if (res && !errorMsg.includes(res)) {
-      storeData('user', res.id)
+    if (res.isAdmin) {
+      if (res && !errorMsg.includes(res)) {
+        storeData('user', res.id)
+        delete res.id
+        storeObjData('userInfo', res)
+        stateUpdate(`/dashboard`, { state: origin + '/dashboard' })
+        return
+      }
+    } else {
+      storeData('regUser', res.id)
       delete res.id
-      storeObjData('userInfo', res)
-      stateUpdate(`/dashboard`, { state: origin + '/dashboard' })
-      return
+      storeObjData('regUserInfo', res)
+      window.location.href = '/user'
     }
     const error = dom.getElementById('error')
     error.style.color = 'red'
@@ -215,11 +223,65 @@ dom.querySelectorAll('.loginform').forEach(e => {
 
 dom.querySelectorAll('.dashboardMenu').forEach(e => {
   e.addEventListener('click', el => {
-   
+
     const subRoute = el.target.innerText;
     stateUpdate(`${origin}/dashboard/${subRoute.toLowerCase()}`)
   })
 })
 
+
+dom.getElementById('registerSubmit').addEventListener('click', async e => {
+  e.preventDefault()
+
+  const registerFname = dom.getElementById('registerFname')
+  const registerLname = dom.getElementById('registerLname')
+  const age = dom.getElementById('age')
+  const registerEmail = dom.getElementById('registerEmail')
+  const registerPassword = dom.getElementById('registerPassword')
+  const registerPasswordTwo = dom.getElementById('registerPasswordTwo')
+
+
+  if (registerPassword.value !== registerPasswordTwo.value) {
+    window.alert('Password not Match')
+    return
+  }
+
+  if (registerFname.value.length < 1 || registerLname.value.length < 1 || age.value.length < 1 || registerEmail.value.length < 1 || !registerEmail.value.includes('@') || registerPassword.value.length < 1 || registerPasswordTwo.value.length < 1) {
+    window.alert('missing information')
+    return
+  }
+
+
+  let body = {
+    fName: registerFname.value,
+    lName: registerLname.value,
+    age: age.value,
+    password: registerPassword.value,
+    email: registerEmail.value
+  }
+
+  body = JSON.stringify(body)
+  try {
+
+
+    const res = await axios.post('/api/account/create', body, config)
+
+    window.alert('Registration Complete')
+
+    window.location.href = '/'
+
+
+
+  } catch (err) {
+
+    window.alert(err.response.data)
+
+
+  }
+
+
+
+
+})
 
 

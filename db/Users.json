@@ -1,1 +1,1 @@
-[{"fName":"fName","lName":"lName","age":"18","password":"123","id":"a6844539-5324-4251-a7b8-a49ebca40b24","email":"email@email.com","isAdmin":true,"fullName":"fName lName"}]
+[{"fName":"fName","lName":"lName","age":"18","password":"123","id":"a6844539-5324-4251-a7b8-a49ebca40b24","email":"email@email.com","isAdmin":true,"fullName":"fName lName"},{"fName":"Ja","lName":"Morant","age":"25","password":"123","id":"f62ed715-8295-468b-9fa3-d61662e3821a","email":"morant@email.com","isAdmin":false,"fullName":"Ja Morant"}]

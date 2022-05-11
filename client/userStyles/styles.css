@@ -1,0 +1,55 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0
+}
+
+.flex {
+    display: flex;
+}
+
+.jc-center {
+    justify-content:  center;
+}
+
+.gap-40 {
+    gap: 40px;
+} 
+
+li {
+    list-style: none;
+}
+
+nav > ul {
+
+    padding: 20px 0;
+    border-bottom: 1px solid black;
+    
+}
+
+.navLi {
+    cursor: pointer;
+    padding: 10px;
+}
+
+.navLi:hover {
+    background-color: rgb(138, 138, 138);
+    color: #fff
+}
+
+.liHover {
+    background-color: rgb(138, 138, 138);
+    color: #fff
+}
+
+
+#userName {
+    position: absolute;
+    right: 50px;
+}
+
+#logout {
+    cursor: pointer;
+    position: absolute;
+    left: 50px;
+}

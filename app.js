@@ -23,6 +23,9 @@ app.use(bodyParser.json())
 app.get('/',(req,res) => {
     res.sendFile(path.resolve(__dirname + '/client/home.html'))
 })
+app.get('/user',(req,res) => {
+    res.sendFile(path.resolve(__dirname + '/client/user.html'))
+})
 
 
 app.use('/api/login', require('./routes/api/login'));

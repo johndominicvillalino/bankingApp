@@ -37,7 +37,7 @@ router.get('/',async(req,res) => {
 
     returnThis = returnThis.sort((a,b) => b.time.localeCompare(a.time))
 
-    console.log(returnThis)
+
 
     return res.json(returnThis)
 

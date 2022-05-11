@@ -28,6 +28,7 @@ app.get('/',(req,res) => {
 app.use('/api/login', require('./routes/api/login'));
 app.use('/api/account/create', require('./routes/api/create'));
 app.use('/api/bank', require('./routes/api/Bank'));
+app.use('/api/transactions', require('./routes/api/alltrans'));
 
 
 app.get('*', (req, res) => {

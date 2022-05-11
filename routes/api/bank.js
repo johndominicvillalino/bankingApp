@@ -87,23 +87,35 @@ router.put('/', [
 
     const { account, action, amount } = req.body
 
-    // console.log(account,action,amount)
-
     let banks = await getData(Banks)
     let getBank = banks.find(e => e.accountNum === account)
     if (account) {
 
         switch (action) {
             case 'withdraw':
-
+                const deduction = getBank.balance -= amount
+                const widthdrawInfo = {
+                    type: 'withdrawal',
+                    running: deduction,
+                    amount: amount,
+                    time: new Date()
+                }
+                getBank.withdrawals.push(widthdrawInfo)
                 getBank.balance -= amount
                 updateSingleData(Banks, getBank)
+
                 return res.json('done')
                 break;
             case 'deposit':
+                const addition = getBank.balance += amount
+                const depositInfo = {
+                    type: 'deposit',
+                    running: addition,
+                    amount: amount,
+                    time: new Date()
+                }
+                getBank.deposits.push(depositInfo)
 
-
-                getBank.balance += amount
 
                 updateSingleData(Banks, getBank)
                 return res.json('done')
@@ -119,13 +131,13 @@ router.put('/', [
 })
 
 
-//@@ /bank/transfer
 
-router.put('/transfer',[
-    check('from','no From Id'),
-    check('to','no to Id'),
-    check('transVal','no transfer value ')
-],async (req,res) => {
+
+router.put('/transfer', [
+    check('from', 'no From Id'),
+    check('to', 'no to Id'),
+    check('transVal', 'no transfer value ')
+], async (req, res) => {
 
     const errors = validationResult(req);
 
@@ -138,22 +150,44 @@ router.put('/transfer',[
     let banks = await getData(Banks)
 
     const fromBnk = banks.find(e => e.accountNum === from)
-    
-    fromBnk.balance =  fromBnk.balance - transValue;
+
+    const deduction = fromBnk.balance - transValue;
+
+    const widthdrawInfo = {
+        type: 'transfer',
+        running: deduction,
+        amount: transValue,
+        time: new Date()
+    }
+    fromBnk.withdrawals.push(widthdrawInfo)
+
+    fromBnk.balance = deduction
 
     updateSingleData(Banks, fromBnk)
 
     const toBnk = banks.find(e => e.accountNum === to)
-    
-    toBnk.balance = toBnk.balance + transValue;
+
+    const addition =  toBnk.balance + transValue;
+    const depositInfo = {
+        type: 'transfer',
+        running: addition,
+        amount: transValue,
+        time: new Date()
+    }
+
+    toBnk.deposits.push(depositInfo)
+
+    toBnk.balance = addition
 
     updateSingleData(Banks, toBnk)
-      
+
     return res.json('test')
 
 
 
 })
+
+
 
 
 

@@ -70,7 +70,8 @@ function processStateRoute() {
   }
 
   switch (getStringData("currentState")) {
-    case origin + '/':
+
+       case origin + '/':
       hideOthers('loginForm')
       break;
     case origin + '/register':
@@ -142,6 +143,7 @@ function processStateRoute() {
       const span = dom.createElement('span')
       span.setAttribute('id','addAccount')
       span.setAttribute('class','add-account-button')
+      span.setAttribute('onclick',`addAccountFunc()`)
       span.textContent = '+'
       dom.getElementById('inner').appendChild(span)
 

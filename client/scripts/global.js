@@ -229,7 +229,7 @@ async function submitTrans(action) {
     case "deposit":
 
 
-      if(valDeposit.value < 1 || vavalDepositl.value.length < 1) {
+      if(valDeposit.value < 1 || valDeposit.value.length < 1) {
         window.alert('missing input value')
         return 
       }
@@ -299,4 +299,120 @@ async function submitTrans(action) {
 function logout() {
   window.localStorage.clear();
   window.location.href = "/";
+}
+
+
+function addAccountFunc () {
+  
+  //a6844539-5324-4251-a7b8-a49ebca40b24
+  const body = dom.getElementById('body')
+  body.style.opacity = .20
+  body.style.zIndex = 0
+
+  const div = dom.createElement('div')
+  div.setAttribute('class','addFormContainer')
+  // const form = dom.createElement()
+
+  const inputOne = dom.createElement('input')
+  const inputTwo = dom.createElement('input')
+  const inputThree = dom.createElement('input')
+  const submitBtn = dom.createElement('button')
+  const span = dom.createElement('span')
+  span.setAttribute('class','xButton')
+  span.setAttribute('onclick','removeAddForm()')
+  span.textContent = 'X'
+
+
+
+  inputOne.setAttribute('type','text')
+  inputTwo.setAttribute('type','text')
+  inputThree.setAttribute('type','number')
+
+  inputOne.setAttribute('placeholder','First Name')
+  inputOne.setAttribute('id','createFname')
+  inputTwo.setAttribute('placeholder','Last Name')
+  inputTwo.setAttribute('id','createLname')
+  inputThree.setAttribute('placeholder','Initial Deposit')
+  inputThree.setAttribute('id','initialDeposit')
+
+  submitBtn.setAttribute('onclick','createAccountSubmit(this)')
+  submitBtn.textContent = 'Create'
+
+  const allElements = [span,inputOne,inputTwo,inputThree,submitBtn]
+
+  allElements.forEach(e => {
+    div.appendChild(e)
+  })
+  
+  dom.querySelector('html').appendChild(div)
+
+
+
+}
+
+
+function removeAddForm () {
+  const body = dom.getElementById('body')
+  body.style.opacity = 1
+  body.style.zIndex = 1
+  dom.querySelector('.addFormContainer').remove()
+}
+
+async function createAccountSubmit (e) {
+
+
+  
+  const id = 'a6844539-5324-4251-a7b8-a49ebca40b24'
+
+  const fName = dom.getElementById('createFname')
+  const lName = dom.getElementById('createLname')
+  const initialD = dom.getElementById('initialDeposit')
+
+
+  const checkVal = [fName,lName,initialD]
+
+  checkVal.forEach(e => {
+    if(e.value.length < 1) {
+      window.alert(`no value of ${e.placeholder}`)
+      return
+    }
+  })
+
+  const url = '/api/bank'
+
+
+  body = {
+    id,
+    fName:fName.value,
+    lName:lName.value,
+    initialDeposit:initialD.value
+  }
+
+let config = {
+    headers: {
+      "Content-Type": "Application/json",
+    },
+  };
+
+  await axios.post(url,body,config)
+
+  removeAddForm()
+
+  let clickEvent = new Event('click');
+  dom.getElementById('accountHome').dispatchEvent(clickEvent)
+
+
+}
+
+function analysis () {
+
+  dom.querySelectorAll('.banksContainer').forEach(e => {
+    e.remove()
+  })
+  const personal = dom.querySelector('.personalBankContainer');
+  if(personal) {
+    personal.remove()
+  }
+
+   
 }

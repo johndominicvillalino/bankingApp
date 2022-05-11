@@ -7,39 +7,45 @@ const getData = (filePath) => {
 };
 
 
-const updateData = (filePath,newData) => {
-    let currentData = getData(filePath)
-    currentData.push(newData)
-    currentData = JSON.stringify(currentData)
-    fs.writeFileSync(filePath,currentData, "utf-8");
-
-    return 'done'
-    
-  };
-
-
-  
-const updateSingleData = (filePath,newData) => {
-
+const updateData = (filePath, newData) => {
   let currentData = getData(filePath)
-  const newDataAccount = newData.accountNum
-  
-  const found = currentData.find(e => e.accountNum === newDataAccount)
-  
-  if(found) {
-    found.balance = newData.balance
-  }
-
+  currentData.push(newData)
   currentData = JSON.stringify(currentData)
-  fs.writeFileSync(filePath,currentData, "utf-8");
+  fs.writeFileSync(filePath, currentData, "utf-8");
 
   return 'done'
-  
+
 };
 
 
 
+const updateSingleData = (filePath, newData) => {
+
+  let currentData = getData(filePath)
+  const newDataAccount = newData.accountNum
+
+  const found = currentData.find(e => e.accountNum === newDataAccount)
+
+  if (found) {
+    found.balance = newData.balance
+    found.withdrawals = newData.withdrawals
+    found.deposits = newData.deposits
+
+    
+  }
+
   
+  currentData = JSON.stringify(currentData)
+
+  fs.writeFileSync(filePath, currentData, "utf-8");
+
+  return 'done'
+
+};
+
+
+
+
 module.exports = {
   updateSingleData,
   getData,

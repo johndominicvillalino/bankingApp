@@ -198,6 +198,8 @@ dom.getElementById('loginSubmit').addEventListener('click', async e => {
       storeData('regUser', res.id)
       delete res.id
       storeObjData('regUserInfo', res)
+      const banks = await getAllBanks()
+      storeObjData('allbanks', banks)
       window.location.href = '/user'
     }
     const error = dom.getElementById('error')

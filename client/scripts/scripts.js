@@ -199,8 +199,12 @@ dom.getElementById('loginSubmit').addEventListener('click', async e => {
       delete res.id
       storeObjData('regUserInfo', res)
       const banks = await getAllBanks()
-      storeObjData('allbanks', banks)
+      const alltrans = await axios.get('api/transactions')
+      storeObjData('allbanks', banks.data)
+      storeObjData('AllTrans', alltrans.data)
+      
       window.location.href = '/user'
+      return
     }
     const error = dom.getElementById('error')
     error.style.color = 'red'

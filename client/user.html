@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./userStyles/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
       integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
@@ -23,6 +24,58 @@
         <li id="userName"></li>
       </ul>
     </nav>
+
+    <div id="balance">Balance : N/A</div>
+    <div id="AccountNumber">#</div>
+
+    <div
+      id="depositWithdraw"
+      class="depositWithdrawContainer flex jc-center gap-40"
+    >
+      <div class="btnContainer">
+        <button class="wdButtn">Deposit</button>
+        <button class="wdButtn">Withdraw</button>
+      </div>
+
+      <form class="formDepositWithdraw" action="">
+        <input id="amount" type="number" />
+        <button id="submiTrans">Complete</button>
+      </form>
+    </div>
+    <div class="chartContainer">
+      <canvas id="myChart" style="width: 100%; max-width: 700px"></canvas>
+    </div>
     <script src="./userStyles/scripts.js"></script>
+    <script>
+      let alltrans = window.localStorage.getItem("AllTrans");
+      alltrans = JSON.parse(alltrans);
+
+      const data = alltrans.map((e) => {
+        return {
+          x: new Date(e.time).getDate(),
+          y: parseInt(e.running),
+        };
+      });
+
+      new Chart("myChart", {
+        type: "scatter",
+        data: {
+          datasets: [
+            {
+              pointRadius: 4,
+              pointBackgroundColor: "rgb(0,0,255)",
+              data: data,
+            },
+          ],
+        },
+        options: {
+          legend: { display: false },
+          scales: {
+            xAxes: [{ ticks: { min: 1, max: 31 } }],
+            yAxes: [{ ticks: { min: 100, max: 20000 } }],
+          },
+        },
+      });
+    </script>
   </body>
 </html>

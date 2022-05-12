@@ -42,6 +42,11 @@ nav > ul {
     color: #fff
 }
 
+.btnHover {
+    background-color: rgb(29, 29, 29) !important;
+    color: #fff
+}
+
 
 #userName {
     position: absolute;
@@ -52,4 +57,31 @@ nav > ul {
     cursor: pointer;
     position: absolute;
     left: 50px;
+}
+
+.depositWithdrawContainer {
+    margin-top: 20px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formDepositWithdraw {
+    display:flex;
+
+}
+
+.btnContainer {
+    display: flex;
+    gap: 20px;
+}
+
+.btnContainer > button {
+    padding: 5px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.chartContainer {
+    display: flex;
+    justify-content: center;
 }

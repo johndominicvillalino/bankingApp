@@ -85,3 +85,29 @@ nav > ul {
     display: flex;
     justify-content: center;
 }
+
+#budgetExpense {
+    width: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap:20px;
+    flex-direction: column;
+}
+
+.startBudget {
+    padding: 10px 20px;
+    background-color: antiquewhite;
+    cursor: pointer;
+   
+
+}
+
+.startBudget:hover {
+    background-color: rgb(117, 112, 106);
+}
+
+.budgetDivs {
+    display:flex;
+    flex-direction: column;
+}

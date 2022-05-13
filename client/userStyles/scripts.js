@@ -12,7 +12,7 @@ const globalState = {
     nav: ''
 }
 
-const nav = {loc:'Deposit / Withdraw'};
+const nav = { loc: 'Deposit / Withdraw' };
 
 
 window.addEventListener('load', e => {
@@ -22,6 +22,7 @@ window.addEventListener('load', e => {
     getName()
     filterTrans()
     hideUnhide()
+    putBalance()
 
 })
 
@@ -36,7 +37,7 @@ function getBank() {
 
     const userFullName = user.fName + " " + user.lName
 
-    storage.setItem('fullName',userFullName)
+    storage.setItem('fullName', userFullName)
     let userBank = banks.find(e => e.fullName === userFullName)
     const userBankStr = JSON.stringify(userBank)
     storage.setItem('userBank', userBankStr)
@@ -52,20 +53,28 @@ function filterTrans() {
     allTrans = JSON.parse(allTrans)
     let filterTrans = allTrans.filter(e => e.name === fullName)
     filterTrans = JSON.stringify(filterTrans)
-    storage.setItem('AllTrans',filterTrans)
+    storage.setItem('AllTrans', filterTrans)
 
 
 }
 
 function hideUnhide() {
-    if(nav.loc === 'Deposit / Withdraw'){
+    if (nav.loc === 'Deposit / Withdraw') {
         dom.getElementById('myChart').style.display = 'none'
         dom.getElementById('depositWithdraw').style.display = 'flex'
+        dom.getElementById('budgetExpense').style.display = 'none'
     }
-    if(nav.loc === 'Activities'){
+    if (nav.loc === 'Activities') {
         dom.getElementById('myChart').style.display = 'block'
         dom.getElementById('depositWithdraw').style.display = 'none'
+        dom.getElementById('budgetExpense').style.display = 'none'
     }
+    if (nav.loc === 'Budget / Expense') {
+        dom.getElementById('myChart').style.display = 'none'
+        dom.getElementById('depositWithdraw').style.display = 'none'
+        dom.getElementById('budgetExpense').style.display = 'flex'
+    }
+
 }
 
 
@@ -151,16 +160,139 @@ dom.getElementById('submiTrans').addEventListener('click', async e => {
     balance = parseInt(balance)
 
     if (transType === 'deposit') {
-        balance +=  parseInt(value)
+        balance += parseInt(value)
     } else {
-        balance -=  parseInt(value)
+        balance -= parseInt(value)
     }
-    
+
     balanceEl.textContent = `Balance : ₱${balance}`
     dom.getElementById('amount').value = ''
     window.alert('Transaction complete!')
-    
+
 })
 
 
+let counter = 0
+
+dom.querySelector('.startBudget').addEventListener('click', e => {
+
+    counter += 1;
+
+    const budgetExpense = dom.getElementById('budgetExpense')
+
+    const description = dom.createElement('input')
+    const value = dom.createElement('input')
+
+    const calculate = dom.createElement('button')
+
+    calculate.textContent = 'Calculate'
+    calculate.setAttribute('id', `calculate${counter}`)
+    calculate.setAttribute('onclick', `calculate(this)`)
+
+
+    const save = dom.createElement('button')
+    save.setAttribute('id', 'save')
+    save.textContent = 'save'
+
+    const div = dom.createElement('div')
+    div.setAttribute('class', 'budgetDiv')
+
+    value.setAttribute('type', 'number')
+    description.setAttribute('type', 'text')
+
+    value.setAttribute('id', `value${counter}`)
+    value.setAttribute('class', `value`)
+
+    description.setAttribute('id', `description${counter}`)
+    description.setAttribute('class', `description`)
+
+    value.setAttribute('placeholder', 'amount')
+    description.setAttribute('placeholder', 'description')
+
+    const arr = [value, description, calculate]
+
+    dom.querySelector('.startBudget').textContent = 'Add more'
+
+    arr.forEach(e => {
+        div.append(e)
+    })
+
+    budgetExpense.append(div)
+
+
+    if (dom.getElementById('save')) {
+        dom.getElementById('save').remove()
+    }
+    // budgetExpense.append(save)
+
+})
+
+
+function putBalance() {
+    let balance = storage.getItem('userBank')
+    balance = JSON.parse(balance)
+    balance = balance.balance
+
+    storage.setItem('balance',balance)
+}
+
+function calculate(e) {
+
+    let balance = storage.getItem('balance')
+    
+    if(dom.getElementById(`result${e.id}`)){
+        dom.getElementById(`result${e.id}`).remove()
+    }
+
+    const { id } = e
+    let num = id.match(/\d/g)
+    num = num.join(" ")
+
+    let desc, value;
+
+    const allValue = dom.querySelectorAll('.value')
+    const allDesc = dom.querySelectorAll('.description')
+
+    allValue.forEach(e => {
+        if (e.id.includes(num)) {
+            value = e.value
+        }
+    })
+    allDesc.forEach(e => {
+        if (e.id.includes(num)) {
+            desc = e.value
+        }
+    })
+
+    const span = dom.createElement('span')
+    span.setAttribute('id',`result${e.id}`)
+    span.style.marginLeft = '10px'
+
+    balance = parseInt(balance)
+
+    if(balance < parseInt(value)) {
+        span.textContent = 'insufficient funds'
+        span.style.color = 'red'
+        dom.getElementById(e.id).after(span)
+        return 
+    }
+
+    if(value.length < 1 || parseInt(value) <1 || typeof value == 'String' ) {
+        span.textContent = 'Please put a valid amount'
+        span.style.color = 'red'
+        dom.getElementById(e.id).after(span)
+        return
+    }
+
+    const diff = balance - parseInt(value)
+
+    console.log(diff)
+
+    storage.setItem('balance',diff)
+    span.style.color = 'black'
+    span.textContent = diff
+    dom.getElementById(e.id).after(span)
+
+
+}
 

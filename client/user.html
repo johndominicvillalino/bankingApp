@@ -43,6 +43,7 @@
       </form>
     </div>
     <div class="chartContainer">
+      <h1 id="graphTitle">PANG HIHINAYANG GRAPH</h1>
       <canvas id="myChart" style="width: 100%; max-width: 700px"></canvas>
     </div>
 
@@ -57,12 +58,22 @@
       let alltrans = window.localStorage.getItem("AllTrans");
       alltrans = JSON.parse(alltrans);
 
+      const arr = []
+
       const data = alltrans.map((e) => {
         return {
           x: new Date(e.time).getDate(),
           y: parseInt(e.running),
         };
       });
+
+      data.forEach(e => {
+        arr.push(e.y)
+      })
+
+      arr.sort((a,b) => a-b)
+
+      // console.log(arr)
 
       new Chart("myChart", {
         type: "scatter",
@@ -79,7 +90,7 @@
           legend: { display: false },
           scales: {
             xAxes: [{ ticks: { min: 1, max: 31 } }],
-            yAxes: [{ ticks: { min: 100, max: 20000 } }],
+            yAxes: [{ ticks: { min: parseInt(arr[0]) - 1000, max: arr[arr.length] } }],
           },
         },
       });

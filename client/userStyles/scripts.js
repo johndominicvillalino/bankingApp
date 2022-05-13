@@ -18,11 +18,20 @@ const nav = { loc: 'Deposit / Withdraw' };
 window.addEventListener('load', e => {
     //get name
 
+    if(!storage.getItem('regUser')){
+        window.location.href = '/'
+    }
+    
+
     getBank()
     getName()
     filterTrans()
     hideUnhide()
     putBalance()
+
+   
+   
+    
 
 })
 
@@ -63,16 +72,20 @@ function hideUnhide() {
         dom.getElementById('myChart').style.display = 'none'
         dom.getElementById('depositWithdraw').style.display = 'flex'
         dom.getElementById('budgetExpense').style.display = 'none'
+        dom.getElementById('graphTitle').style.display = 'none'
     }
     if (nav.loc === 'Activities') {
         dom.getElementById('myChart').style.display = 'block'
         dom.getElementById('depositWithdraw').style.display = 'none'
         dom.getElementById('budgetExpense').style.display = 'none'
+       
+        dom.getElementById('graphTitle').style.display = 'block'
     }
     if (nav.loc === 'Budget / Expense') {
         dom.getElementById('myChart').style.display = 'none'
         dom.getElementById('depositWithdraw').style.display = 'none'
         dom.getElementById('budgetExpense').style.display = 'flex'
+        dom.getElementById('graphTitle').style.display = 'none'
     }
 
 }
@@ -250,17 +263,21 @@ function calculate(e) {
 
     let desc, value;
 
+    const currIds = []
+
     const allValue = dom.querySelectorAll('.value')
     const allDesc = dom.querySelectorAll('.description')
 
     allValue.forEach(e => {
         if (e.id.includes(num)) {
             value = e.value
+            currIds.push(e.id)
         }
     })
     allDesc.forEach(e => {
         if (e.id.includes(num)) {
             desc = e.value
+            currIds.push(e.id)
         }
     })
 
@@ -284,9 +301,18 @@ function calculate(e) {
         return
     }
 
+
+    currIds.forEach(e => {
+
+
+         dom.getElementById(e).readOnly = true;
+    })
+
+   
+ 
     const diff = balance - parseInt(value)
 
-    console.log(diff)
+    // console.log(diff)
 
     storage.setItem('balance',diff)
     span.style.color = 'black'

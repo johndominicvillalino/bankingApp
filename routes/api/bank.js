@@ -101,13 +101,14 @@ router.put('/', [
                     time: new Date()
                 }
                 getBank.withdrawals.push(widthdrawInfo)
-                getBank.balance -= amount
+                // getBank.balance -= amount
                 updateSingleData(Banks, getBank)
 
                 return res.json('done')
                 break;
             case 'deposit':
-                const addition = getBank.balance += amount
+                 getBank.balance = parseInt(getBank.balance)
+                const addition = getBank.balance += parseInt(amount)
                 const depositInfo = {
                     type: 'deposit',
                     running: addition,

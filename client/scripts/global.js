@@ -247,7 +247,7 @@ async function submitTrans(action) {
 
       await axios.put(url, body, config);
       let balInt = parseInt(balance.textContent);
-      balance.textContent = balInt + depoVal;
+      balance.textContent = parseInt(balInt) + depoVal;
       valDeposit.value = "";
       window.alert("transaction completed!");
 

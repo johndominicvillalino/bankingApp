@@ -308,6 +308,10 @@ function calculate(e) {
          dom.getElementById(e).readOnly = true;
     })
 
+    
+    dom.getElementById(e.id).style.pointerEvents = 'none'
+
+
    
  
     const diff = balance - parseInt(value)
